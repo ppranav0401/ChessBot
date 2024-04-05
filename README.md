@@ -1,2 +1,2 @@
 # ChessBot
-A chess AI bot
+An AI Chess Bot
