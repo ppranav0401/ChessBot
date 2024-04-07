@@ -4,6 +4,7 @@ from const import *
 from game import Game
 from square import Square
 from move import Move
+from chess_bot import ChessBot
 class Main:
     def __init__(self) -> None:
         pygame.init()
@@ -11,6 +12,7 @@ class Main:
         pygame.display.set_caption('Chess')
 
         self.game = Game()
+        self.ai = ChessBot(self.game, 'black')
 
     def mainloop(self):
 
@@ -29,6 +31,11 @@ class Main:
             if dragger.dragging:
                 dragger.update_blit(screen)
 
+            if game.next_player=='ai':
+                ai_move = self.ai.get_best_move()
+                board.move(ai_move[0],ai_move[1])
+                game.next_turn()
+            
             for event in pygame.event.get():
                 #click
                 if event.type==pygame.MOUSEBUTTONDOWN:
@@ -94,7 +101,7 @@ class Main:
                             game.show_bg(screen)
                             game.show_last_move(screen)
                             game.show_pieces(screen)
-
+                            
                             #next turn
                             game.next_turn()
 
@@ -112,6 +119,14 @@ class Main:
                         screen = self.screen
                         dragger = self.game.dragger
                         board = self.game.board
+                    
+                    if event.key==pygame.K_a:
+                        game.next_turn_ai()
+                        print('Welcome to AI Mode!')
+
+                    if event.key==pygame.K_p:
+                        game.next_turn_pvp()
+                        print('Welcome to PVP Mode!')
 
                 #quit
                 elif event.type==pygame.QUIT:

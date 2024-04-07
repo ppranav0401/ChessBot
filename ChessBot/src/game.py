@@ -8,6 +8,7 @@ class Game:
     def __init__(self) -> None:
         self.next_player = 'white'
         self.hovered_sqr = None
+        self.ai_mode = False
         self.board = Board()
         self.dragger = Dragger()
         self.config = Config()
@@ -94,7 +95,16 @@ class Game:
 
     #other methods
     def next_turn(self):
-        self.next_player = 'white' if self.next_player=='black' else 'black'
+        if self.ai_mode:
+            self.next_player = 'white' if self.next_player=='ai' else 'ai'
+        else:
+            self.next_player = 'white' if self.next_player=='black' else 'black'
+    
+    def next_turn_ai(self):
+        self.ai_mode = True
+    
+    def next_turn_pvp(self):
+        self.ai_mode = False
     
     def set_hover(self, row, col):
         self.hovered_sqr = self.board.squares[row][col]

@@ -227,7 +227,6 @@ class Board:
                             if not self.in_check(piece, move):
                                 # append new move
                                 piece.add_move(move)
-                            else: break
                         else:
                             # append new move
                             piece.add_move(move)
@@ -278,8 +277,8 @@ class Board:
                     else: break
 
                     # incrementing incrs
-                    possible_move_row = possible_move_row + row_incr
-                    possible_move_col = possible_move_col + col_incr
+                    possible_move_row += row_incr
+                    possible_move_col += col_incr
 
         def king_moves():
             adjs = [
@@ -301,7 +300,7 @@ class Board:
                     if self.squares[possible_move_row][possible_move_col].is_empty_or_enemy(piece.color):
                         # create squares of the new move
                         initial = Square(row, col)
-                        final = Square(possible_move_row, possible_move_col) # piece=piece
+                        final = Square(possible_move_row, possible_move_col)
                         # create new move
                         move = Move(initial, final)
                         # check potencial checks
@@ -309,7 +308,7 @@ class Board:
                             if not self.in_check(piece, move):
                                 # append new move
                                 piece.add_move(move)
-                            else: break
+                            else: continue
                         else:
                             # append new move
                             piece.add_move(move)
@@ -321,7 +320,7 @@ class Board:
                 if isinstance(left_rook, Rook):
                     if not left_rook.moved:
                         for c in range(1, 4):
-                            # castling is not possible because there are pieces in between ?
+                            # castling is not possible because there are pieces in between
                             if self.squares[row][c].has_piece():
                                 break
 
@@ -339,7 +338,7 @@ class Board:
                                 final = Square(row, 2)
                                 moveK = Move(initial, final)
 
-                                # check potencial checks
+                                # check potential checks
                                 if bool:
                                     if not self.in_check(piece, moveK) and not self.in_check(left_rook, moveR):
                                         # append new move to rook
