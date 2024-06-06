@@ -14,6 +14,15 @@ class Board:
         self._create()
         self._add_pieces('white')
         self._add_pieces('black')
+    
+    def scoreBoardMaterial(self):
+        score = 0
+        for row in range(ROWS):
+            for col in range(COLS):
+                if self.squares[row][col].has_piece():
+                    piece = self.squares[row][col].piece
+                    score+=piece.value
+        return score
 
     def move(self, piece, move, testing=False):
         initial = move.initial
@@ -89,15 +98,15 @@ class Board:
                 if temp_board.squares[row][col].has_enemy_piece(piece.color):
                     p = temp_board.squares[row][col].piece
                     temp_board.calc_moves(p, row, col, bool=False)
-                    for m in p.moves:
-                        if isinstance(m.final.piece, King):
+                    for move in p.moves:
+                        if isinstance(move.final.piece, King) and move.final.has_enemy_piece(p.color):
                             return True
         
         return False
 
     def calc_moves(self, piece, row, col, bool=True):
         '''
-            Calculate all the possible (valid) moves of an specific piece on a specific position
+        Calculate all the possible (valid) moves of an specific piece on a specific position
         '''
         
         def pawn_moves():
@@ -116,7 +125,7 @@ class Board:
                         # create a new move
                         move = Move(initial, final)
 
-                        # check potencial checks
+                        # check potential checks
                         if bool:
                             if not self.in_check(piece, move):
                                 # append new move
@@ -195,7 +204,6 @@ class Board:
                             else:
                                 # append new move
                                 piece.add_move(move)
-
 
         def knight_moves():
             # 8 possible moves
